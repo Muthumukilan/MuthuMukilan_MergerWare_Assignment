@@ -1,6 +1,12 @@
 import React from "react";
+import { useTracker } from "meteor/react-meteor-data";
+import { LonssCollection } from "/imports/api/lons";
+import { Lons } from "./Lons";
 
-export const BorrowerView = () => {
+export const BorrowerView = ({ senduser }) => {
+  const lonsa = useTracker(() => {
+    return LonssCollection.find({ borrower: senduser }).fetch();
+  });
   return (
     <div>
       <table>
@@ -12,16 +18,9 @@ export const BorrowerView = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>John Doe</td>
-            <td>$5000</td>
-            <td>Jane Smith</td>
-          </tr>
-          <tr>
-            <td>Alice Johnson</td>
-            <td>$3000</td>
-            <td>Bob Williams</td>
-          </tr>
+          {lonsa.map((lons) => (
+            <Lons key={lons._id} lons={lons} />
+          ))}
         </tbody>
       </table>
     </div>

@@ -8,25 +8,39 @@ import { Borrower } from "./Borrower";
 import { BorrowerView } from "./BorrowerView";
 import { Admin } from "./Admin";
 import { useTracker } from "meteor/react-meteor-data";
+import { UsersCollection } from "../api/users";
 
 export const App = () => {
+  const pickRoll = () => {};
   const logout = () => Meteor.logout();
   const user = useTracker(() => Meteor.user());
   const userFilter = user ? { userId: user._id } : {};
+  const lenderfind = () => {
+    return UsersCollection.findOne({ uid: user.username, roll: "lender" });
+  };
+  const borrowerfind = () => {
+    return UsersCollection.findOne({ uid: user.username, roll: "borrower" });
+  };
 
   return (
     <div>
       {user ? (
         <>
-          <div className="user" onClick={logout}>
-            {user.username} 🚪
-          </div>
-          <h1>Welcome to Meteor!</h1>
+          {lenderfind ? (
+            <>
+              <div className="user" onClick={logout}>
+                {user.username} 🚪
+              </div>
 
-          <Lender userdetails={user} />
-          {/* <Borrower />
-    <BorrowerView />
-    <Admin /> */}
+              <Lender userdetails={user.username} />
+            </>
+          ) : (
+            <>
+              <Borrower userdetails={user.username} />
+            </>
+          )}
+
+          {/* <Admin /> */}
         </>
       ) : (
         <>

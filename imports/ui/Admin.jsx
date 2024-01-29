@@ -1,8 +1,15 @@
 import React from "react";
+import { LonssCollection } from "/imports/api/lons";
+import { useTracker } from "meteor/react-meteor-data";
+import { AdminView } from "./AdminView";
 
-export const Admin = () => {
+export const Admin = (senduser) => {
+  const lonsa = useTracker(() => {
+    return LonssCollection.find({}).fetch();
+  });
   return (
     <div>
+      <h1>Welcome Admin!!</h1>
       <table>
         <thead>
           <tr>
@@ -12,16 +19,9 @@ export const Admin = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>John Doe</td>
-            <td>$5000</td>
-            <td>Jane Smith</td>
-          </tr>
-          <tr>
-            <td>Alice Johnson</td>
-            <td>$3000</td>
-            <td>Bob Williams</td>
-          </tr>
+          {lonsa.map((lons) => (
+            <AdminView key={lons._id} lons={lons} />
+          ))}
         </tbody>
       </table>
     </div>

@@ -1,15 +1,19 @@
 import React from "react";
 import { useTracker } from "meteor/react-meteor-data";
 import { LonssCollection } from "/imports/api/lons";
-import { Lends } from "./Lends";
+import { GiveLend } from "./GiveLend";
 
-export const LenderView = ({ senduser }) => {
+export const NeedLenders = ({ senduser }) => {
+  const deleteTask = ({ _id }) =>
+    LonssCollection.update(
+      { _id: _id },
+      { $set: { lender: senduser, bol: 1 } }
+    );
   const lends = useTracker(() => {
-    return LonssCollection.find({ lender: senduser }).fetch();
+    return LonssCollection.find({ bol: 0 }).fetch();
   });
   return (
     <div>
-      <h1>Welcome</h1>
       <table>
         <thead>
           <tr>
@@ -20,7 +24,11 @@ export const LenderView = ({ senduser }) => {
         </thead>
         <tbody>
           {lends.map((lends) => (
-            <Lends key={lends._id} lends={lends} />
+            <GiveLend
+              key={lends._id}
+              lends={lends}
+              onDeleteClick={deleteTask}
+            />
           ))}
         </tbody>
       </table>

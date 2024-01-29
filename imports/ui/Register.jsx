@@ -90,10 +90,6 @@ export const Register = () => {
           <button type="submit">Register</button>
         </div>
       </form>
-
-      <p>
-        Already have an account? <a href="#login">Login here</a>.
-      </p>
     </div>
   );
 };

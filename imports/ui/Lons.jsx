@@ -1,5 +1,13 @@
 import React from "react";
 
 export const Lons = ({ lons }) => {
-  return <td>{lons.lender}</td>;
+  return (
+    <>
+      <tr>
+        <td>{lons.borrower}</td>
+        <td>{lons.amount}</td>
+        <td>{lons.lender}</td>
+      </tr>
+    </>
+  );
 };
